@@ -4,7 +4,7 @@ require_once 'nuevaTarea.php';
 
 session_start();
 
-$id=$_SESSION['id'];
+$id=$_POST['tareaid'];
 $tareaText=$_POST['tareaText'];
 $tareaEtiqueta=$_POST['tareaEtiqueta'];
 $tareaEstado=$_POST['tareaEstado'];

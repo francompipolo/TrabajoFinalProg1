@@ -36,7 +36,7 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 	</style>
  
 </head>
-<body>
+<body class="p-3 mb-2 bg-info text-white">
 
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">
@@ -70,7 +70,7 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
                  foreach ($tareas2 as $otrasTareas2) {
                  	     echo '<tr>';
-                 	     echo '<td style="display:none;">' .$otrasTareas->getid() . '</td>';
+                 	     
                          echo '<td>' . $otrasTareas2->getTareaText() . '</td>';
 
 
@@ -111,20 +111,20 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
 
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Agregar Tarea</h5>
+<div class="modal fade text-black" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered text-black" role="document">
+    <div class="modal-content text-black bg-secondary">
+      <div class="modal-header text-black">
+        <h5 class="modal-title " id="exampleModalLongTitle">Agregar Tarea</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
 
-      <div class="modal-body">
-       <form action="registroTarea.php" method="post">
-
+      <div class="modal-body  text-black">
+       <form class="bg-secondary" action="registroTarea.php" method="post">
+         
         <input type="text" class="form-control" required="true" name="tareaText" placeholder="Escriba la tarea a hacer * (Requerido)">         
        	<br> 
        	<input type="text" class="form-control" name="tareaEtiqueta" placeholder="Etiquetas (Opcional)">         
@@ -177,6 +177,7 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
                     <th>Tarea</th>
 					<th>Estado</th>
 					<th>Etiqueta</th>
+          <th style="display:none;" >Fecha De Alarma</th>
 					<th>Modificar</th>
 
 				</tr>
@@ -196,7 +197,9 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
                          if($otrasTareas->getTareaestado()==2){echo '<td><span class="badge badge badge-success"">Activa</span></td>'; }
 
                          echo '<td>' . $otrasTareas->getTareaetiqueta() . '</td>';
+                     
                          $idtarea= "eliminartarea.php?e=" . $otrasTareas->getid();
+
                          echo '<td><a type="button" class="btn editboton"><i  class="fa fa-pencil" aria-hidden="true"></i><a  href='.$idtarea.' type="button" class="btn"><i  class="fa fa-trash" aria-hidden="true"></i></td>';
                          
 
@@ -220,9 +223,9 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
 <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modificar Tarea</h5>
+    <div class="modal-content bg-secondary">
+      <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLongTitle">Modificar Tarea</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -230,8 +233,9 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
 
       <div class="modal-body">
-       <form action="ModificarTarea.php" method="post">
+       <form class="bg-secondary" action="ModificarTarea.php" method="post">
 
+         <input type="hidden" class="form-control" required="true" name="tareaid"  id="tareaid" >  
         <input type="text" class="form-control" required="true" id="tareahacer" name="tareaText" placeholder="Escriba la tarea a hacer * (Requerido)">         
        	<br> 
        	<input type="text" class="form-control" name="tareaEtiqueta"id="tareaetiqueta" placeholder="Etiquetas (Opcional)">         
@@ -289,7 +293,7 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
  				return $(this).text();
 
  			}).get();
-             $('#idtarea').val(data[0]);
+       $('#tareaid').val(data[0]);
  			$('#tareahacer').val(data[1]);
  			$('#tareaetiqueta').val(data[3]);
  			$('#tareaestado').val(data[2]);
@@ -321,12 +325,14 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
 			<div class="table-responsive">
 			<table class="table table-striped table-hover">
-				<tr>
-                    <th>Tarea</th>
+				<tr> 
+
+         <th style="display:none;">ID</th>
+          <th>Tarea</th>
 					<th>Estado</th>
 					<th>Etiqueta</th>
-                    <th>Fecha de Alarma</th>
-                    <th>Modificar</th>
+          <th>Fecha de Alarma</th>
+        <th>Modificar</th>
 
 				</tr>
 
@@ -337,9 +343,11 @@ if( $_SESSION['id'] == null || $_SESSION['id'] == ""){
 
                  foreach ($tareas2 as $otrasTareas2) {
                  	     echo '<tr>';
+
+                         echo '<td style="display:none;">' .$otrasTareas2->getid() . '</td>';
                          echo '<td>' . $otrasTareas2->getTareaText() . '</td>';
 
-
+                         
                          if($otrasTareas2->getTareaestado()==1){echo '<td><span class="badge badge-secondary">Pendiente</span></td>'; }
                          if($otrasTareas2->getTareaestado()==2){echo '<td><span class="badge badge badge-success"">Activa</span></td>'; }
 

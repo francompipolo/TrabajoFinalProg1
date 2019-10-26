@@ -36,7 +36,7 @@ if( $_SESSION['admin'] == null || $_SESSION['admin'] == 0){
 	</style>
  
 </head>
-<body>
+<body class="p-3 mb-2 bg-info text-white">
 
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">
@@ -81,7 +81,9 @@ if( $_SESSION['admin'] == null || $_SESSION['admin'] == 0){
 
                             if( $otrasTareas2->getActivo()==0){echo '<td><span class="badge badge-secondary">Inactivo</span></td>'; }else{echo '<td><span class="badge badge badge-success"">Activo</span></td>';}
 
-                            echo '<td><a  href="" type="button" class="btn"><i  class="fa fa-pencil" aria-hidden="true"></i><a  href="" type="button" class="btn"><i  class="fa fa-trash" aria-hidden="true"></i></td>';
+                            $idtarea= "eliminarusuario.php?e=" . $otrasTareas2->getId();
+
+                            echo '<td><a  href='.$idtarea.' type="button" class="btn"><i  class="fa fa-trash" aria-hidden="true"></i></td>';
 
                          
                         
@@ -95,6 +97,7 @@ if( $_SESSION['admin'] == null || $_SESSION['admin'] == 0){
                  }  ?>
                         
         
+
       </table>
       </div>
     </div>

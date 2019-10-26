@@ -23,6 +23,25 @@ class NuevaTarea extends BD{
 
    }
 
+
+ public function ModificarTarea(Tarea $t){
+
+
+    self::$conexion->beginTransaction();
+
+      $insercion = self::$conexion->prepare("UPDATE tareas set texto= ?,etiquetas= ?,fecha_alarma= ?,fecha_creacion= ?,estados_id=? where id= ?;");
+    
+      $dia =date("Y/m/d");
+      $datosTarea = [$t->getTareaText(), $t->getTareaEtiqueta(),$t->getTareaAlarma(),$dia,$t->getTareaEstado(),$t->getId()];
+    
+      $insercion->execute($datosTarea);
+
+      self::$conexion->commit();
+    
+    header("location: index.php");
+
+
+   }
    public function getAll(){
 
     $e = [];
@@ -30,13 +49,12 @@ class NuevaTarea extends BD{
     $r = self::$conexion->query($sql, PDO::FETCH_ASSOC);
    
     while ( $fila = $r->fetch() ) {
-                // Creamos un nuevo objeto de clase Equipo y lo agregamos al
-                // array $e:
-                $e[] = new Tarea($fila['id'],$fila['texto'],$fila['etiquetas'], $fila['estados_id'],$fila['fecha_alarma']);
 
-            }
+     $e[] = new Tarea($fila['id'],$fila['texto'],$fila['etiquetas'], $fila['estados_id'],$fila['fecha_alarma']);
 
-            return $e;
+    }
+
+    return $e;
 
 
    }
@@ -59,7 +77,7 @@ class NuevaTarea extends BD{
 
    }
 
-      public function getAllAlarmahoy(){
+   public function getAllAlarmahoy(){
 
     $dia=date("y/m/d");
     
@@ -68,13 +86,12 @@ class NuevaTarea extends BD{
     $r = self::$conexion->query($sql, PDO::FETCH_ASSOC);
    
     while ( $fila = $r->fetch() ) {
-                // Creamos un nuevo objeto de clase Equipo y lo agregamos al
-                // array $e:
-                $e[] = new Tarea($fila['id'],$fila['texto'],$fila['etiquetas'], $fila['estados_id'],$fila['fecha_alarma']);
+                
+      $e[] = new Tarea($fila['id'],$fila['texto'],$fila['etiquetas'], $fila['estados_id'],$fila['fecha_alarma']);
 
-            }
+    }
 
-            return $e;
+    return $e;
 
 
    }
@@ -82,19 +99,28 @@ class NuevaTarea extends BD{
    public function getAllUsuarios(){
 
     $e = [];
-   	$sql = "Select * FROM usuarios";
+    $idahora=$_SESSION['id'];
+   	$sql = "Select * FROM usuarios where id != $idahora ";
     $r = self::$conexion->query($sql, PDO::FETCH_ASSOC);
    
     while ( $fila = $r->fetch() ) {
-                // Creamos un nuevo objeto de clase Equipo y lo agregamos al
-                // array $e:
-                $e[] = new verUsuario($fila['nombre'],$fila['mail'],$fila['ultimo_ingreso'], $fila['es_administrador'],$fila['activo']);
+      $e[] = new verUsuario($fila['id'],$fila['nombre'],$fila['mail'],$fila['ultimo_ingreso'], $fila['es_administrador'],$fila['activo']);
 
-            }
+    }
 
-            return $e;
+    return $e;
 
 
+   }
+
+   public function eliminarUsuario($id)
+   {
+
+    $sql = "DELETE FROM usuarios where id= $id ";
+
+    $r = self::$conexion->query($sql);
+
+    header("location:AdminUsuarios.php");
    }
 
 
